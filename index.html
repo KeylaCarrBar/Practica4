@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>JavaScript</title>
+  </head>
+  <body>
+   
+    
+  <div class="container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Registrar
+    </button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">No.</th>
+          <th scope="col">Email</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">imagen</th>
+        </tr>
+      </thead>
+      <tbody id="tabla">
+       
+       
+      </tbody>
+    </table>
+  </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Registrar Persona</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form" method="POST">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre">
+          </div>
+          <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido">
+          </div>
+          <div class="mb-3">
+            <label for="imagen" class="form-label">URL de imagen</label>
+            <input type="text" class="form-control" id="imagen">
+          </div>
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+
+//POST https://reqres.in/api/users
+
+  const form = document.getElementById('form');
+
+form.addEventListener('submit', e =>{
+  e.preventDefault();
+
+  const data= new FormData(form);
+  const registro = new URLSearchParams(data);
+  
+  console.log(registro);
+
+fetch('https://reqres.in/api/users',{
+method: 'POST',
+headers: {
+  "Content-Type": "application/json",
+},
+body: JSON.stringify(registro)
+
+})
+.then((data) => data.json())
+ .then((respon) => {
+  console.log(respon);  
+  var tabla ="";
+  var nombre = "";
+  var apellido = "";
+  var email= "";
+  var avatar = "";
+
+  respon.data.forEach(i => {
+    console.log(i)
+    tabla+="<tr>";
+      tabla+="<td>"+i.id+"</td>";
+      tabla+="<td>"+i.email+"</td>";
+      tabla+="<td>"+i.first_name+"</td>";
+      tabla+="<td>"+i.last_name+"</td>";
+      tabla+="<td>"+"<img src="+i.avatar+" id="+"avatar"+"/>"+"</td>";
+    
+  });
+  document.getElementById('tabla').innerHTML = tabla;
+  document.getElementById('avatar').src=tabla;
+
+ }).catch(error => console.error(error))
+});
+
+
+
+
+//GET https://reqres.in/api/users?page=2
+ fetch('https://reqres.in/api/users?page=2')
+ .then((data) => data.json())
+ .then((respon) => {
+  console.log(respon);  
+  var tabla ="";
+  var nombre = "";
+  var apellido = "";
+  var email= "";
+  var avatar = "";
+
+  respon.data.forEach(i => {
+    console.log(i)
+    tabla+="<tr>";
+      tabla+="<td>"+i.id+"</td>";
+      tabla+="<td>"+i.email+"</td>";
+      tabla+="<td>"+i.first_name+"</td>";
+      tabla+="<td>"+i.last_name+"</td>";
+      tabla+="<td>"+"<img src="+i.avatar+" id="+"avatar"+"/>"+"</td>";
+    
+  });
+  document.getElementById('tabla').innerHTML = tabla;
+  document.getElementById('avatar').src=tabla;
+
+ }).catch(function(error) {
+console.log(error);
+});
+
+</script>
+   
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+  </body>
+</html>
